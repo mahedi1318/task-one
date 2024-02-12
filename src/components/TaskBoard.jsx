@@ -1,12 +1,39 @@
+import { useState } from "react";
 import Search from "./Tasks/Search";
 import TaskAction from "./Tasks/TaskAction";
 import TasksList from "./Tasks/TasksList";
+import AddModalTask from "./Tasks/AddModalTask";
 
 
 export default function TaskBoard() {
+
+
+    let taskDefulData = {
+        id : crypto.randomUUID(),
+        title : "Integration API",
+        description : "Connect an existing API to a third-party database using secure methods and handle data exchange efficiently.",
+        tags : ['Web', 'Javascript', 'React'],
+        priority : "High",
+        isFavorite : "false",
+    };
+
+    let [tasks, setTasks] = useState([taskDefulData]);
+    let [addTaskShow, setAddTaskShow] = useState(false)
+
+    let handleAddTasks = ()=>{
+        setAddTaskShow(true)
+    }
+
+    let handleAddValueCatch = (newTaskData)=>{
+        setTasks([...tasks, newTaskData])
+        setAddTaskShow(false)
+    }
+
   return (
     <>
         <section className="mb-20 flex justify-center flex-col items-center" id="tasks">
+            
+            {addTaskShow && <AddModalTask onSendData={handleAddValueCatch}/>}
             
             <div className="container">
                 
@@ -15,8 +42,8 @@ export default function TaskBoard() {
             </div>
           
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-                    <TaskAction/>
-                    <TasksList/>
+                    <TaskAction onAddTask={handleAddTasks}/>
+                    <TasksList tasks={tasks}/>
                 </div>
             </div>
         </section>
