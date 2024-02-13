@@ -9,7 +9,7 @@ let [task, setTask] = useState(onEditData ||{
         description : "",
         tags : [],
         priority : "",
-        isFavorite : "false",
+        isFavorite : false,
 })
 
 let [addmin, setAddMin]= useState(Object.is(onEditData, null))

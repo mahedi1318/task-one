@@ -14,7 +14,7 @@ export default function TaskBoard() {
         description : "Connect an existing API to a third-party database using secure methods and handle data exchange efficiently.",
         tags : ['Web', 'Javascript', 'React'],
         priority : "High",
-        isFavorite : "false",
+        isFavorite : false,
     };
 
     let [tasks, setTasks] = useState([taskDefulData]);
@@ -54,7 +54,15 @@ export default function TaskBoard() {
     }
 
     let handleAllDelete = ()=>{
-        console.log("ami")
+        tasks.length = 0;
+        setTasks([...tasks])
+    }
+
+    let handleFavorite = (isFava)=>{
+        let isFavIndex = tasks.findIndex((item)=> item.id === isFava.id)
+        let copyTasks = [...tasks]
+        copyTasks[isFavIndex].isFavorite = !copyTasks[isFavIndex].isFavorite
+        setTasks(copyTasks)
     }
 
   return (
@@ -71,7 +79,7 @@ export default function TaskBoard() {
           
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
                     <TaskAction onAddTask={handleAddTasks} onAllDelete={handleAllDelete}/>
-                    <TasksList tasks={tasks} onEdit={handleEditeData} onSingleDeleteData={handleSingleDelete}/>
+                    <TasksList tasks={tasks} onEdit={handleEditeData} onSingleDeleteData={handleSingleDelete} onFave={handleFavorite}/>
                 </div>
             </div>
         </section>
