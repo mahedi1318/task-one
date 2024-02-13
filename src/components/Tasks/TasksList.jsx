@@ -1,6 +1,6 @@
 
 
-export default function TasksList({tasks}) {
+export default function TasksList({tasks, onEdit, onSingleDeleteData}) {
     
   return (
     <>
@@ -48,8 +48,8 @@ export default function TasksList({tasks}) {
                                         <td className="text-center">{task.priority}</td>
                                         <td>
                                             <div className="flex items-center justify-center space-x-3">
-                                                <button className="text-red-500">Delete</button>
-                                                <button className="text-blue-500">Edit</button>
+                                                <button onClick={()=>onSingleDeleteData(task.id)} className="text-red-500">Delete</button>
+                                                <button onClick={()=>onEdit(task)} className="text-blue-500">Edit</button>
                                             </div>
                                         </td>
                                     </tr>     

@@ -19,21 +19,49 @@ export default function TaskBoard() {
 
     let [tasks, setTasks] = useState([taskDefulData]);
     let [addTaskShow, setAddTaskShow] = useState(false)
+    let [taskEditData, setTaskEditData] = useState(null)
 
     let handleAddTasks = ()=>{
         setAddTaskShow(true)
     }
 
-    let handleAddValueCatch = (newTaskData)=>{
-        setTasks([...tasks, newTaskData])
+    let handleAddValueCatch = (newTaskData, addmin)=>{
+        if(addmin){
+            setTasks([...tasks, newTaskData])
+        }else{
+            setTasks(
+                tasks.map((task)=>{
+                    if(task.id === newTaskData.id){
+                        return newTaskData
+                    }
+                    return task
+                })
+            )
+        }
         setAddTaskShow(false)
+        setTaskEditData(null)
+        
+    }
+
+    let handleEditeData = (editCatch)=>{
+        setTaskEditData(editCatch)
+        setAddTaskShow(true)
+    }
+
+    let handleSingleDelete = (deleteId)=>{
+        let deleteItem = tasks.filter((item)=> item.id !== deleteId)
+        setTasks(deleteItem)
+    }
+
+    let handleAllDelete = ()=>{
+        console.log("ami")
     }
 
   return (
     <>
         <section className="mb-20 flex justify-center flex-col items-center" id="tasks">
             
-            {addTaskShow && <AddModalTask onSendData={handleAddValueCatch}/>}
+            {addTaskShow && <AddModalTask onSendData={handleAddValueCatch} onEditData={taskEditData}/>}
             
             <div className="container">
                 
@@ -42,8 +70,8 @@ export default function TaskBoard() {
             </div>
           
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-                    <TaskAction onAddTask={handleAddTasks}/>
-                    <TasksList tasks={tasks}/>
+                    <TaskAction onAddTask={handleAddTasks} onAllDelete={handleAllDelete}/>
+                    <TasksList tasks={tasks} onEdit={handleEditeData} onSingleDeleteData={handleSingleDelete}/>
                 </div>
             </div>
         </section>
