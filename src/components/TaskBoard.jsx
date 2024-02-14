@@ -3,6 +3,7 @@ import Search from "./Tasks/Search";
 import TaskAction from "./Tasks/TaskAction";
 import TasksList from "./Tasks/TasksList";
 import AddModalTask from "./Tasks/AddModalTask";
+import TaskNotFound from "./Tasks/TaskNotFound";
 
 
 export default function TaskBoard() {
@@ -65,6 +66,11 @@ export default function TaskBoard() {
         setTasks(copyTasks)
     }
 
+    const handleSearching = (searchVal)=>{
+        let searchTask = tasks.filter((item)=> item.title.toLowerCase().includes(searchVal.toLowerCase()))
+        setTasks([...searchTask])
+    }
+
   return (
     <>
         <section className="mb-20 flex justify-center flex-col items-center" id="tasks">
@@ -74,12 +80,16 @@ export default function TaskBoard() {
             <div className="container">
                 
             <div className="p-2 flex justify-end">
-                <Search/>
+                <Search onSearch={handleSearching}/>
             </div>
           
                 <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
                     <TaskAction onAddTask={handleAddTasks} onAllDelete={handleAllDelete}/>
-                    <TasksList tasks={tasks} onEdit={handleEditeData} onSingleDeleteData={handleSingleDelete} onFave={handleFavorite}/>
+                    {tasks.length > 0 ?
+                    (<TasksList tasks={tasks} onEdit={handleEditeData} onSingleDeleteData={handleSingleDelete} onFave={handleFavorite}/>)
+                    :
+                    (<TaskNotFound/>)}
+                    
                 </div>
             </div>
         </section>
